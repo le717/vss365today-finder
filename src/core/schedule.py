@@ -1,9 +1,10 @@
 from typing import List
 
 from apscheduler.schedulers.blocking import BlockingScheduler
-import sys_vars
 
 from src.core import archive, fetch
+from src.helpers import api
+
 
 __all__ = ["main"]
 
@@ -12,7 +13,9 @@ def main():
     scheduler = BlockingScheduler()
 
     # Get the scheduled times
-    schedule_times: List[str] = sys_vars.get_json("SCHEDULE_TIMES")
+    schedule_times: List[str] = api.get(
+        "settings", "timings", headers=api.create_auth_token()
+    )
     for time in schedule_times:
         minute, hour = time.split()
 
