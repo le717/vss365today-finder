@@ -6,7 +6,6 @@ from requests.exceptions import HTTPError
 import sys_vars
 import tweepy
 
-from src.core import config
 from src.helpers import api
 
 
@@ -20,7 +19,8 @@ __all__ = [
 ]
 
 
-CONFIG = config.load()
+# Pull the finder config from the API
+CONFIG = api.get("settings", headers=api.create_auth_token())
 
 
 def __filter_hashtags(hashtags: tuple) -> tuple:
